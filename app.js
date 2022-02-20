@@ -17,6 +17,7 @@ function videoPlayer() {
   const volumeBar = $("#volumeBar");
   const volume = $("#volume");
   const fullScreenBtn = $("#fullScreenBtn");
+  const middleIcon = $("#middleIcon");
 
   //Set Default Values
   let videoIndex = 0;
@@ -28,7 +29,7 @@ function videoPlayer() {
   loadVideo();
 
   //Event Listeners
-  videoFile.on('canplay', setDuration);
+  videoFile.on("canplay", setDuration);
   playBtn.on("click", playPause);
   prevBtn.on("click", prevVideoPlay);
   nextBtn.on("click", nextVideoPlay);
@@ -41,6 +42,9 @@ function videoPlayer() {
   fullScreenBtn.on("click", fullScreen);
   controlBar.on("mouseover", showControllBar);
   controlBar.on("mouseleave", hideControllBar);
+  middleIcon.on("animationend", () => {
+    middleIcon.removeClass("animate");
+  });
 
   //Functions
   function loadVideo() {
@@ -49,21 +53,37 @@ function videoPlayer() {
     // duration.text(document.querySelector('video').duration);
   }
 
-  function setDuration(){
-    duration.html(convertTime(this.duration))
+  function setDuration() {
+    duration.html(convertTime(this.duration));
   }
 
   function playPause() {
     if (!isPlaing) {
       videoFile.trigger("play");
       isPlaing = true;
-      playBtn.children("i").removeClass("bi-play-fill");
-      playBtn.children("i").addClass("bi-pause-fill");
+      playBtn
+        .children("i")
+        .removeClass("bi-play-fill")
+        .addClass("bi-pause-fill");
+      middleIcon
+        .removeClass("bi-pause-circle")
+        .removeClass("bi-volume-mute")
+        .removeClass("bi-volume-up")
+        .removeClass("bi-volume-down")
+        .addClass("bi-play-circle animate");
     } else {
       videoFile.trigger("pause");
       isPlaing = false;
-      playBtn.children("i").removeClass("bi-pause-fill");
-      playBtn.children("i").addClass("bi-play-fill");
+      playBtn
+        .children("i")
+        .removeClass("bi-pause-fill")
+        .addClass("bi-play-fill");
+      middleIcon
+      .removeClass("bi-play-circle")
+      .removeClass("bi-volume-mute")
+      .removeClass("bi-volume-up")
+      .removeClass("bi-volume-down")
+      .addClass("bi-pause-circle animate");
     }
   }
 
@@ -78,9 +98,10 @@ function videoPlayer() {
   function nextVideoPlay() {
     videoIndex++;
     if (videoIndex > playList.length - 1) videoIndex = 0;
-    isPlaing = false;
     loadVideo();
-    playPause();
+    if(isPlaing){
+      videoFile.trigger('play');
+    }
   }
 
   function timeUpdate() {
@@ -131,10 +152,22 @@ function videoPlayer() {
       videoFile.get(0).volume = 0;
       volumeBtn.removeClass("bi-volume-up").addClass("bi-volume-mute");
       volume.css({ width: 0 });
+      middleIcon
+      .removeClass("bi-play-circle")
+      .removeClass("bi-volume-up")
+      .removeClass("bi-volume-down")
+      .removeClass("bi-pause-circle")
+      .addClass("bi-volume-mute animate");
     } else {
       videoFile.get(0).volume = 1;
       volumeBtn.removeClass("bi-volume-mute").addClass("bi-volume-up");
       volume.css({ width: "100%" });
+      middleIcon
+      .removeClass("bi-play-circle")
+      .removeClass("bi-volume-mute")
+      .removeClass("bi-volume-down")
+      .removeClass("bi-pause-circle")
+      .addClass("bi-volume-up animate");
     }
   }
 
@@ -151,16 +184,34 @@ function videoPlayer() {
         .removeClass("bi-volume-up")
         .removeClass("bi-volume-down")
         .addClass("bi-volume-mute");
+        middleIcon
+        .removeClass("bi-play-circle")
+        .removeClass("bi-volume-up")
+        .removeClass("bi-volume-down")
+        .removeClass("bi-pause-circle")
+        .addClass("bi-volume-mute animate");
     } else if (volumePercent < 40) {
       volumeBtn
         .removeClass("bi-volume-mute")
         .removeClass("bi-volume-up")
         .addClass("bi-volume-down");
+        middleIcon
+        .removeClass("bi-play-circle")
+        .removeClass("bi-volume-mute")
+        .removeClass("bi-volume-up")
+        .removeClass("bi-pause-circle")
+        .addClass("bi-volume-down animate");
     } else {
       volumeBtn
         .removeClass("bi-volume-mute")
         .removeClass("bi-volume-down")
         .addClass("bi-volume-up");
+        middleIcon
+        .removeClass("bi-play-circle")
+        .removeClass("bi-volume-mute")
+        .removeClass("bi-volume-down")
+        .removeClass("bi-pause-circle")
+        .addClass("bi-volume-up animate");
     }
   }
 

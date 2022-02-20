@@ -87,3 +87,30 @@ button{
 }
 
 .control-bar i{font-size: 1.3rem;}
+
+.middle-icon{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 6rem;
+  transform: translate(-50%, -50%);
+  transform-origin: 0 0;
+  display: none;
+}
+
+.middle-icon.animate{
+  display: inline-block;
+  animation: middleIconEffect 0.4s linear;
+}
+
+@keyframes middleIconEffect {
+  0%{
+    opacity: 1;
+    transform: scale(0.8) translate(-50%, -50%);
+  }
+  100%{
+    opacity: 0;
+    transform: scale(1.2) translate(-50%, -50%);
+  }
+  
+}
