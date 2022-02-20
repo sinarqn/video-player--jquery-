@@ -1,0 +1,89 @@
+*, *::after, *::before{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root{
+  --primary-color: #129568;
+}
+
+body{
+  height: 100vh;
+  background-color: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container{
+  background-color: #000;
+  width: min(100%, 1100px);
+  height: 70vh;
+  position: relative;
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+}
+.video-file{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.control-bar{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2.5rem;
+  padding: 0.5rem 1rem;
+  display: flex;
+  gap: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #000;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
+}
+
+button,.control-bar i, .progress-bar, .volume-bar{
+  cursor: pointer;
+}
+button{
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  padding: 0.1rem 0.3rem;
+  background-color: #333;
+  color: #fff;
+  border-radius: 0.2rem;
+}
+.play-btn{
+  font-size: 1.5rem;
+  background-color: crimson;
+}
+.control-bar span{
+  font-size: 0.8rem;
+}
+.progress-bar{
+  width: 65%;
+  height: 0.6rem;
+  background-color: #fff;
+  border-radius: 0.2rem;
+}
+.volume-bar{
+  width: 5%;
+  height: 0.4rem;
+  background-color: #fff;
+  border-radius: 0.2rem;
+}
+.progress,
+.volume{
+  background-color: var(--primary-color);
+  border-radius: inherit;
+  height: 100%;
+  pointer-events: none;
+  transition: 0.2s;
+}
+
+.control-bar i{font-size: 1.3rem;}
