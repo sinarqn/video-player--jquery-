@@ -26,6 +26,9 @@ function videoPlayer() {
   videoFile.get(0).volume = 0.5;
   volume.css({ width: "50%" });
   let isFullScreen = false;
+  let progressGrab = false;
+  let volumeGrab = false;
+
   loadVideo();
 
   //Event Listeners
@@ -42,9 +45,16 @@ function videoPlayer() {
   fullScreenBtn.on("click", fullScreen);
   controlBar.on("mouseover", showControllBar);
   controlBar.on("mouseleave", hideControllBar);
-  middleIcon.on("animationend", () => {
-    middleIcon.removeClass("animate");
-  });
+  middleIcon.on("animationend", endMiddleIconAnimation);
+  //drag Events
+  progressBar.on('mousedown', grabProgressBar)
+  progressBar.on('mousemove', setProgressByDrag)
+  progressBar.on('mouseup', releaseProgressBar)
+  controlBar.on('mouseleave', releaseProgressBar)
+  volumeBar.on('mousedown', grabvolumeBar)
+  volumeBar.on('mousemove', setvolumeByDrag)
+  volumeBar.on('mouseup', releasevolumeBar)
+  controlBar.on('mouseleave', releasevolumeBar)
 
   //Functions
   function loadVideo() {
@@ -118,6 +128,28 @@ function videoPlayer() {
       (videoFile.get(0).duration * progressPercent) / 100;
   }
 
+  function grabProgressBar(){
+    progressGrab = true;
+    videoFile.trigger('pause');
+    progress.css({transition: 'none'})
+  }
+
+  function setProgressByDrag(e){
+    if(progressGrab){
+    let x = e.pageX - $(this).offset().left
+    let progressPercent = (x / $(this).width()) * 100;
+    progress.css({ width: `${progressPercent}%` });
+    videoFile.get(0).currentTime =
+      (videoFile.get(0).duration * progressPercent) / 100;
+    }
+  }
+
+  function releaseProgressBar(){
+    progressGrab = false;
+    if(isPlaing) videoFile.trigger('play')
+    progress.css({transition: '0.2s'})
+  }
+
   function setLoop() {
     if (!loop) {
       loop = true;
@@ -135,7 +167,6 @@ function videoPlayer() {
   }
 
   function videoEnd() {
-    console.log("ended");
     if (loop) {
       nextVideoPlay();
     } else {
@@ -216,6 +247,44 @@ function videoPlayer() {
     }
   }
 
+  function grabvolumeBar(){
+    volumeGrab = true;
+    volume.css({transition: 'none'})
+  }
+
+  function setvolumeByDrag(e){
+    if(volumeGrab){
+      let x = e.pageX - $(this).offset().left;
+    if (x < 0) x = 0;
+    let volumePercent = (x / $(this).width()) * 100;
+    volume.css({ width: `${volumePercent}%` });
+    videoFile.get(0).volume = volumePercent / 100;
+
+    //Change volume btn Look
+    if (volumePercent == 0) {
+      volumeBtn
+        .removeClass("bi-volume-up")
+        .removeClass("bi-volume-down")
+        .addClass("bi-volume-mute");
+    } else if (volumePercent < 40) {
+      volumeBtn
+        .removeClass("bi-volume-mute")
+        .removeClass("bi-volume-up")
+        .addClass("bi-volume-down");
+    } else {
+      volumeBtn
+        .removeClass("bi-volume-mute")
+        .removeClass("bi-volume-down")
+        .addClass("bi-volume-up");
+    }
+    }
+  }
+
+  function releasevolumeBar(){
+    volumeGrab = false;
+    volume.css({transition: '0.2s'})
+  }
+
   function fullScreen() {
     if (!isFullScreen) {
       $(this).removeClass("bi-fullscreen").addClass("bi-fullscreen-exit");
@@ -266,5 +335,9 @@ function videoPlayer() {
     if (secs < 10) secs = `0${String(secs)}`;
 
     return `${mins}:${secs}`;
+  }
+
+  function endMiddleIconAnimation(){
+      $(this).removeClass("animate");
   }
 }
