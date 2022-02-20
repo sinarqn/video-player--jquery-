@@ -90,9 +90,10 @@ function videoPlayer() {
   function prevVideoPlay() {
     videoIndex--;
     if (videoIndex < 0) videoIndex = playList.length - 1;
-    isPlaing = false;
     loadVideo();
-    playPause();
+    if(isPlaing){
+      videoFile.trigger('play');
+    }
   }
 
   function nextVideoPlay() {

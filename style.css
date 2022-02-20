@@ -100,7 +100,7 @@ button{
 
 .middle-icon.animate{
   display: inline-block;
-  animation: middleIconEffect 0.4s linear;
+  animation: middleIconEffect 0.4s ease-out;
 }
 
 @keyframes middleIconEffect {
