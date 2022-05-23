@@ -2,7 +2,7 @@ $(document).ready(videoPlayer);
 
 function videoPlayer() {
   const container = $(".container");
-  const playList = ["video-2.mp4", "video-1.mp4", "video-3.mp4", "video-4.mp4"];
+  const playList = ["video-4.mp4", "video-1.mp4", "video-2.mp4", "video-3.mp4"];
   const videoFile = $("#videoFile");
   const controlBar = $("#controlBar");
   const playBtn = $("#playBtn");
@@ -20,7 +20,7 @@ function videoPlayer() {
   const middleIcon = $("#middleIcon");
 
   //Set Default Values
-  let videoIndex = 0;
+  let videoIndex = 1;
   let loop = false;
   let isPlaing = false;
   videoFile.get(0).volume = 0.5;
@@ -46,15 +46,25 @@ function videoPlayer() {
   controlBar.on("mouseover", showControllBar);
   controlBar.on("mouseleave", hideControllBar);
   middleIcon.on("animationend", endMiddleIconAnimation);
-  //drag Events
+
+  //mouse drag Events
   progressBar.on('mousedown', grabProgressBar)
-  progressBar.on('mousemove', setProgressByDrag)
+  progressBar.on('mousemove', setProgressByMouseDrag)
   progressBar.on('mouseup', releaseProgressBar)
   controlBar.on('mouseleave', releaseProgressBar)
   volumeBar.on('mousedown', grabvolumeBar)
-  volumeBar.on('mousemove', setvolumeByDrag)
+  volumeBar.on('mousemove', setvolumeByMouseDrag)
   volumeBar.on('mouseup', releasevolumeBar)
   controlBar.on('mouseleave', releasevolumeBar)
+
+  //Touch drag Events
+  progressBar.on('touchstart', grabProgressBar)
+  progressBar.on('touchmove', setProgressByTouchDrag)
+  progressBar.on('touchend', releaseProgressBar)
+  volumeBar.on('touchstart', grabvolumeBar)
+  volumeBar.on('touchmove', setvolumeByTouchDrag)
+  volumeBar.on('touchend', releasevolumeBar)
+
 
   //Functions
   function loadVideo() {
@@ -134,13 +144,20 @@ function videoPlayer() {
     progress.css({transition: 'none'})
   }
 
-  function setProgressByDrag(e){
+  function setProgressByMouseDrag(e){
     if(progressGrab){
     let x = e.pageX - $(this).offset().left
     let progressPercent = (x / $(this).width()) * 100;
     progress.css({ width: `${progressPercent}%` });
     videoFile.get(0).currentTime =
       (videoFile.get(0).duration * progressPercent) / 100;
+    }
+  }
+
+  function setProgressByTouchDrag(e){
+    if(progressGrab){
+      // console.log(e.touches[0].screenX - e.touches[0].clientX)
+      console.log(e.touches[0].distX)
     }
   }
 
@@ -252,7 +269,7 @@ function videoPlayer() {
     volume.css({transition: 'none'})
   }
 
-  function setvolumeByDrag(e){
+  function setvolumeByMouseDrag(e){
     if(volumeGrab){
       let x = e.pageX - $(this).offset().left;
     if (x < 0) x = 0;
@@ -278,6 +295,10 @@ function videoPlayer() {
         .addClass("bi-volume-up");
     }
     }
+  }
+
+  function setvolumeByTouchDrag(e){
+
   }
 
   function releasevolumeBar(){

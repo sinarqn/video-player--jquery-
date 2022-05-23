@@ -20,27 +20,40 @@
   <body>
     <div class="container">
       <video src="" id="videoFile" class="video-file"></video>
+
+
+
       <div id="controlBar" class="control-bar">
-        <button id="playBtn" class="play-btn">
-          <i class="bi bi-play-fill"></i>
-        </button>
-        <button id="prevBtn" class="prev-btn">
-          <bi class="bi-skip-backward-fill"></bi>
-        </button>
-        <button id="nextBtn" class="next-btn">
-          <bi class="bi-skip-forward-fill"></bi>
-        </button>
-        <span id="currentTime">00:00</span>
-        <div id="progressBar" class="progress-bar">
-          <div id="progress" class="progress"></div>
+
+        <div class="nav-btns">
+          <button id="playBtn">
+            <i class="bi bi-play-fill"></i>
+          </button>
+          <button id="prevBtn" class="prev-btn">
+            <bi class="bi-skip-backward-fill"></bi>
+          </button>
+          <button id="nextBtn" class="next-btn">
+            <bi class="bi-skip-forward-fill"></bi>
+          </button>
         </div>
-        <span id="duration">00:00</span>
-        <i class="bi-pause-btn loop-btn" id="loopBtn"></i>
-        <i class="bi bi-volume-up" id="volumeBtn"></i>
-        <div id="volumeBar" class="volume-bar">
-          <div id="volume" class="volume"></div>
+
+        <div class="time-stats">
+          <span id="currentTime">00:00</span>
+          <div id="progressBar" class="progress-bar">
+            <div id="progress" class="progress"></div>
+          </div>
+          <span id="duration">00:00</span>
         </div>
-        <i class="bi bi-fullscreen" id="fullScreenBtn"></i>
+
+        <div class="option-btns">
+          <i class="bi-pause-btn loop-btn" id="loopBtn"></i>
+          <i class="bi bi-volume-up" id="volumeBtn"></i>
+          <div id="volumeBar" class="volume-bar">
+            <div id="volume" class="volume"></div>
+          </div>
+          <i class="bi bi-fullscreen" id="fullScreenBtn"></i>
+        </div>
+
       </div>
       <i class="bi bi-play-circle middle-icon" id="middleIcon"></i>
     </div>
